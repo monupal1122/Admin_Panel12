@@ -27,9 +27,7 @@ function App() {
           <Route path="/subcategories" element={<Layout><Subcategories /></Layout>} />
           <Route path="/users" element={<Layout><Users /></Layout>} />
           <Route path="/orderpage" element={<Layout><Order /></Layout>} />
-          <Route path="/banners" element={<Layout><Banners /></Layout>} />
-         
-          <Route path="/Login" element={<Login />} />
+          <Route path="/banners" element={<Layout><Banners /></Layout>} />  
         </>
       )}
     </Routes>
