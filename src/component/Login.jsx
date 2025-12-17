@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Lock, Mail, Eye, EyeOff, LogIn } from "lucide-react";
 import { Navigation } from "lucide-react";
+const API1 = `${import.meta.env.VITE_API_URL}/api`;
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
@@ -28,7 +29,7 @@ export default function Login() {
 
     try {
       // Replace with your actual API endpoint
-      const API = `${API}/api/auth/adminlogin`;
+      const API = `${API1}/auth/adminlogin`;
       
       const response = await fetch(API, {
         method: "POST",
