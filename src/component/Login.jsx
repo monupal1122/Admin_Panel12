@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Lock, Mail, Eye, EyeOff, LogIn } from "lucide-react";
-import { Navigation } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 const API1 = `${import.meta.env.VITE_API_URL}/api`;
 export default function Login() {
+    const navigate = useNavigate(); 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -16,7 +17,7 @@ export default function Login() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
@@ -28,39 +29,23 @@ export default function Login() {
     setMessage("");
 
     try {
-      // Replace with your actual API endpoint
       const API = `${API1}/auth/adminlogin`;
-      
       const response = await fetch(API, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
-
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
-      }
+      if (!response.ok) throw new Error(data.message || "Login failed");
 
       setMessage("Login successful!");
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("admin", JSON.stringify(data.admin));
 
-      // Store token and admin data (Note: use your own state management in production)
-      // localStorage.setItem("token", data.token);
-      // localStorage.setItem("admin", JSON.stringify(data.admin));
+      // ✅ Navigate without reloading
+      navigate("/admin-dashboard");
 
-      // Navigate to dashboard after success
-      
-      setTimeout(() => {
-        window.location.href = "/admin-dashboard";
-        // Or use: navigate("/admin-dashboard") if using react-router
-      }, 1000);
-      
     } catch (error) {
       setMessage(error.message || "Login failed");
       setLoading(false);

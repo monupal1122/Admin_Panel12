@@ -13,20 +13,18 @@ import Layout from "../src/component/Layout";
 function App() {
   return (
     <Routes>
-      {/* Login Page */}
-      <Route path="/" element={<Login />} />
-      {/* Admin Pages with Layout */}
-      <Route path="/admin-dashboard" element={<Layout><Dashboard /></Layout>} />
-      <Route path="/products" element={<Layout><Products /></Layout>} />
-      <Route path="/categories" element={<Layout><Categories /></Layout>} />
-      <Route path="/subcategories" element={<Layout><Subcategories /></Layout>} />
-      <Route path="/users" element={<Layout><Users /></Layout>} />
-      <Route path="/orderpage" element={<Layout><Order /></Layout>} />
-      <Route path="/banners" element={<Layout><Banners /></Layout>} />
+  <Route path="/" element={<Login />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/admin-dashboard" element={<Layout><Dashboard /></Layout>} />
+  <Route path="/products" element={<Layout><Products /></Layout>} />
+  <Route path="/categories" element={<Layout><Categories /></Layout>} />
+  <Route path="/subcategories" element={<Layout><Subcategories /></Layout>} />
+  <Route path="/users" element={<Layout><Users /></Layout>} />
+  <Route path="/orderpage" element={<Layout><Order /></Layout>} />
+  <Route path="/banners" element={<Layout><Banners /></Layout>} />
+  <Route path="*" element={<Login />} />
+</Routes>
 
-      {/* Catch-all: redirect unknown URLs to login */}
-      <Route path="*" element={<Login />} />
-    </Routes>
   );
 }
 
