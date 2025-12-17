@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSearch, FaPlus, FaEdit, FaTrash, FaEye, FaImage } from "react-icons/fa";
 
-const API = "https://grocery-backend-3pow.onrender.com/api";
+const API = `${import.meta.env.VITE_API_URL}/api`;
 
 export default function Banners() {
   const [banners, setBanners] = useState([]);
@@ -177,7 +177,7 @@ export default function Banners() {
               <div className="h-48 bg-gray-200 relative">
                 {banner.imageUrl ? (
                   <img
-                    src={`https://grocery-backend-3pow.onrender.com${banner.imageUrl}`}
+                    src={`${API}${banner.imageUrl}`}
                     alt={banner.title}
                     className="w-full h-full object-cover"
                   />

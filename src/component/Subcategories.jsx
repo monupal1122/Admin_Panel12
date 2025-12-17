@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSearch, FaPlus, FaEdit, FaTrash, FaTags, FaImage } from "react-icons/fa";
 
-const API = "https://grocery-backend-3pow.onrender.com/api";
+const API = `${import.meta.env.VITE_API_URL}/api`;
 
 export default function Subcategories() {
   const [subcategories, setSubcategories] = useState([]);

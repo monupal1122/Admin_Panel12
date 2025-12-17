@@ -28,7 +28,7 @@ export default function Login() {
 
     try {
       // Replace with your actual API endpoint
-      const API = "https://grocery-backend-3pow.onrender.com/api/auth/adminlogin";
+      const API = `${API}/api/auth/adminlogin`;
       
       const response = await fetch(API, {
         method: "POST",

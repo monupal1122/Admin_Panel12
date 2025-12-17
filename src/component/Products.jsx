@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaPlus, FaEdit, FaTrash, FaToggleOn, FaToggleOff, FaSearch, FaFilter } from "react-icons/fa";
 
-const API = "https://grocery-backend-3pow.onrender.com/api";
+const API = `${import.meta.env.VITE_API_URL}/api`;
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -422,7 +422,7 @@ export default function Products() {
                 <div className="aspect-square bg-gray-100 relative">
                   {product.images && product.images.length > 0 ? (
                     <img
-                      src={`https://grocery-backend-3pow.onrender.com${product.images[0]}`}
+                      src={`${API}${product.images[0]}`}
                       alt={product.name}
                       className="w-full h-full object-cover"
                     />
