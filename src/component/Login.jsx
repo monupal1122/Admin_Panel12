@@ -53,40 +53,40 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen w-full flex relative overflow-hidden">
+    <div className="min-h-screen w-full flex flex-col md:flex-row relative overflow-y-auto md:overflow-hidden">
       {/* Animated Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800 animate-gradient"></div>
-      
+
       {/* Decorative Elements */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
 
       {/* LEFT SIDE */}
-      <div className="w-[65%] relative z-10 flex flex-col items-center justify-center px-12">
+      <div className="w-full md:w-[65%] relative z-10 flex flex-col items-center justify-center px-4 md:px-12 py-8 md:py-0">
         {/* Logo */}
-        <div className="absolute top-8 left-8 flex items-center gap-3">
-          <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30">
-            <Lock className="w-6 h-6 text-white" />
+        <div className="absolute top-4 left-4 md:top-8 md:left-8 flex items-center gap-3">
+          <div className="w-8 h-8 md:w-12 md:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30">
+            <Lock className="w-4 h-4 md:w-6 md:h-6 text-white" />
           </div>
-          <span className="text-white text-xl font-bold">AdminPanel</span>
+          <span className="text-white text-lg md:text-xl font-bold">AdminPanel</span>
         </div>
 
         {/* Main Content */}
         <div className="max-w-2xl text-center">
-          <div className="mb-8 inline-block">
-            <div className="w-32 h-32 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center border border-white/20 shadow-2xl">
-              <Lock className="w-16 h-16 text-white" />
+          <div className="mb-6 md:mb-8 inline-block">
+            <div className="w-24 h-24 md:w-32 md:h-32 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center border border-white/20 shadow-2xl">
+              <Lock className="w-12 h-12 md:w-16 md:h-16 text-white" />
             </div>
           </div>
-          
-          <h1 className="text-5xl font-bold text-white mb-4 leading-tight">
+
+          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
             Welcome Back
           </h1>
-          <p className="text-xl text-white/80 mb-8">
+          <p className="text-lg md:text-xl text-white/80 mb-6 md:mb-8">
             Securely access your administrative dashboard
           </p>
 
-          <div className="flex gap-6 justify-center text-white/70">
+          <div className="flex flex-col gap-4 md:flex-row md:gap-6 justify-center text-white/70">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
               <span className="text-sm">Secure Access</span>
@@ -104,10 +104,10 @@ export default function Login() {
       </div>
 
       {/* RIGHT SIDE (Login Form) */}
-      <div className="w-[35%] relative z-10 flex items-center justify-center p-8">
-        <div className="w-full max-w-md bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border border-white/20">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">
+      <div className="w-full md:w-[35%] relative z-10 flex items-center justify-center p-4 md:p-8">
+        <div className="w-full max-w-md bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-10 border border-white/20">
+          <div className="mb-6 md:mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
               Admin Login
             </h2>
             <p className="text-gray-500 text-sm">
