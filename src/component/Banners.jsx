@@ -177,7 +177,7 @@ export default function Banners() {
               <div className="h-48 bg-gray-200 relative">
                 {banner.imageUrl ? (
                   <img
-                    src={`${API}${banner.imageUrl}`}
+                    src={banner.imageUrl}
                     alt={banner.title}
                     className="w-full h-full object-cover"
                   />
