@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
       {/* Sidebar for mobile */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
-          <div className="absolute inset-0 bg-black bg-opacity-50" onClick={closeSidebar}></div>
+          <div className="absolute inset-0 backdrop-blur-sm bg-opacity-50" onClick={closeSidebar}></div>
           <div className="relative">
             <Sidebar onLinkClick={closeSidebar} />
           </div>

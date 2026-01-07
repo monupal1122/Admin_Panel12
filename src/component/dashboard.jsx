@@ -386,7 +386,7 @@ export default function Dashboard() {
                     {order.totalAmount}
                   </span>
                   <span
-                    className={`flex items-center bg-yellow-700 text-amber-50 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                    className={`flex items-center bg-green-700 text-white px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
                       order.deliveryStatus
                     )}`}
                   >

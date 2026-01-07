@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { FaTachometerAlt, FaTags, FaBox, FaUsers, FaShoppingCart, FaImage, FaSignOutAlt } from "react-icons/fa";
+import { FaChartLine } from "react-icons/fa";
 
 const Sidebar = ({ onLinkClick }) => {
   const location = useLocation();
@@ -40,6 +41,11 @@ const Sidebar = ({ onLinkClick }) => {
       label: "Banners",
       icon: <FaImage className="w-5 h-5" />,
     },
+      {
+      path: "/Demand",
+      label: "Demand",
+      icon: <FaChartLine className="w-5 h-5" />,
+    }
   ];
 
   const handleLogout = () => {

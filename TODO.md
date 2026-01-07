@@ -1,6 +1,10 @@
-# TODO: Make Login Screen Responsive
-
-- [x] Update main container to use responsive flex (flex-col on mobile, flex-row on desktop)
-- [x] Adjust left side width to full on mobile, 65% on desktop, and optimize content (smaller logo, text sizes, stack features vertically)
-- [x] Adjust right side width to full on mobile, 35% on desktop, and reduce padding on mobile
-- [ ] Verify the layout works across devices (phones, tablets, desktops)
+- [x] Import axios, useState, useEffect in DemandTrendGraph.jsx
+- [x] Add state for orders, products, loading, error
+- [x] Fetch orders and products in useEffect
+- [x] Process data: aggregate total quantities per product
+- [x] Sort products by total quantity descending, take top 4
+- [x] Generate trend data for last 6 weeks: group orders by week, sum quantities
+- [x] Assign colors and gradients to products
+- [x] Update products state with dynamic data
+- [x] Handle loading and error states in render
+- [x] Test the component

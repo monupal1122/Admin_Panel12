@@ -6,7 +6,7 @@ import Products from "../src/component/Products";
 import Banners from "../src/component/Banners";
 import Users from "../src/component/Users";
 import Order from "../src/component/OrdersPage";
-
+import DemandTrendGraph from "../src/component/DemandTrendGraph";
 import Login from "../src/component/Login";
 import Layout from "../src/component/Layout";
 
@@ -22,6 +22,7 @@ function App() {
   <Route path="/users" element={<Layout><Users /></Layout>} />
   <Route path="/orderpage" element={<Layout><Order /></Layout>} />
   <Route path="/banners" element={<Layout><Banners /></Layout>} />
+  <Route path="/Demand" element={<Layout><DemandTrendGraph /></Layout>} />
   <Route path="*" element={<Login />} />
 </Routes>
 
