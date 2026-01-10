@@ -422,7 +422,7 @@ export default function Products() {
                 <div className="aspect-square bg-gray-100 relative">
                   {product.images && product.images.length > 0 ? (
                     <img
-                      src={`${API}${product.images[0]}`}
+                      src={product.images[0]}
                       alt={product.name}
                       className="w-full h-full object-cover"
                     />
