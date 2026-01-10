@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { FaPlus, FaEdit, FaTrash, FaToggleOn, FaToggleOff } from "react-icons/fa";
+import { FaPlus, FaEdit, FaTrash, FaToggleOn, FaToggleOff, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 
 const API = `${import.meta.env.VITE_API_URL}/api`;
 
@@ -14,6 +15,12 @@ export default function Categories() {
     image: null,
     status: true
   });
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type = 'success') => {
+    setAlert({ message, type });
+    setTimeout(() => setAlert(null), 3000);
+  };
 
   useEffect(() => {
     fetchCategories();
@@ -39,13 +46,16 @@ export default function Categories() {
     try {
       if (editingCategory) {
         await axios.put(`${API}/categories/${editingCategory._id}`, data);
+        showAlert("Category updated successfully!");
       } else {
         await axios.post(`${API}/categories`, data);
+        showAlert("Category created successfully!");
       }
       fetchCategories();
       closeModal();
     } catch (error) {
       console.error("Error saving category:", error);
+      showAlert(error.response?.data?.message || "Error saving category", "error");
     }
   };
 
@@ -54,8 +64,10 @@ export default function Categories() {
       try {
         await axios.delete(`${API}/categories/${id}`);
         fetchCategories();
+        showAlert("Category deleted successfully!");
       } catch (error) {
         console.error("Error deleting category:", error);
+        showAlert("Error deleting category", "error");
       }
     }
   };
@@ -108,17 +120,36 @@ export default function Categories() {
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
+        {/* Success Alert */}
+        <AnimatePresence>
+          {alert && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className={`fixed top-4 right-4 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl border ${alert.type === 'error'
+                ? 'bg-red-50 border-red-200 text-red-800'
+                : 'bg-green-50 border-green-200 text-green-800'
+                }`}
+            >
+              {alert.type === 'error' ? <FaExclamationCircle className="text-xl" /> : <FaCheckCircle className="text-xl" />}
+              <span className="font-semibold">{alert.message}</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">Categories</h1>
-            <p className="text-gray-600 mt-1">Manage your product categories</p>
+            <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Categories</h1>
+            <p className="text-gray-500 font-medium mt-1">Structure your inventory levels</p>
           </div>
           <button
             onClick={handleAddNew}
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-medium flex items-center transition-colors"
+            className="bg-green-600 hover:bg-green-700 text-white px-8 py-3.5 rounded-2xl font-bold flex items-center transition-all shadow-lg hover:shadow-green-200 active:scale-95"
           >
             <FaPlus className="mr-2" />
-            Add New Category
+            New Category
           </button>
         </div>
 
@@ -142,10 +173,10 @@ export default function Categories() {
                       <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
                         {category.image ? (
                           <img
-                                src={category.image}
-                                alt={category.name}
-                                className="w-12 h-12 rounded-xl object-cover"
-                         />
+                            src={category.image}
+                            alt={category.name}
+                            className="w-12 h-12 rounded-xl object-cover"
+                          />
 
                         ) : (
                           <div className="w-6 h-6 bg-green-600 rounded"></div>
@@ -161,11 +192,10 @@ export default function Categories() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <button
                         onClick={() => toggleStatus(category)}
-                        className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                          category.status !== false
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
-                        }`}
+                        className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${category.status !== false
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                          }`}
                       >
                         {category.status !== false ? <FaToggleOn className="mr-1" /> : <FaToggleOff className="mr-1" />}
                         {category.status !== false ? 'Active' : 'Inactive'}
@@ -200,72 +230,100 @@ export default function Categories() {
         </div>
 
         {/* Add/Edit Modal */}
-        {isModalOpen && (
-          <div className="fixed inset-0 bg-blur-sm bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-2xl p-6 w-full max-w-md mx-4">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">
-                {editingCategory ? 'Edit Category' : 'Add New Category'}
-              </h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Category Name</label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                  <textarea
-                    value={formData.desc}
-                    onChange={(e) => setFormData({...formData, desc: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    rows={3}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Icon/Image</label>
-                  <input
-                    type="file"
-                    onChange={(e) => setFormData({...formData, image: e.target.files[0]})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    accept="image/*"
-                  />
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="status"
-                    checked={formData.status}
-                    onChange={(e) => setFormData({...formData, status: e.target.checked})}
-                    className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="status" className="ml-2 block text-sm text-gray-900">
-                    Active
-                  </label>
-                </div>
-                <div className="flex space-x-3 pt-4">
+        <AnimatePresence>
+          {isModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={closeModal}
+                className="absolute inset-0 bg-black/40 backdrop-blur-md"
+              />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="relative bg-white rounded-[2.5rem] p-8 w-full max-w-lg shadow-2xl border border-white/20"
+              >
+                <div className="flex justify-between items-center mb-8">
+                  <h2 className="text-2xl font-black text-gray-900">
+                    {editingCategory ? 'Edit Category' : 'Create Category'}
+                  </h2>
                   <button
-                    type="submit"
-                    className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg font-medium transition-colors"
-                  >
-                    {editingCategory ? 'Update Category' : 'Create Category'}
-                  </button>
-                  <button
-                    type="button"
                     onClick={closeModal}
-                    className="flex-1 bg-gray-300 hover:backdrop-blur-sm text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors"
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                   >
-                    Cancel
+                    ✕
                   </button>
                 </div>
-              </form>
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2 px-1 text-transform uppercase tracking-wider">Name</label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-5 py-4 border-2 border-slate-100 bg-slate-50/50 rounded-2xl focus:outline-none focus:ring-4 focus:ring-green-500/10 focus:border-green-500 transition-all font-medium"
+                      placeholder="e.g. Electronics"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2 px-1 text-transform uppercase tracking-wider">Description</label>
+                    <textarea
+                      value={formData.desc}
+                      onChange={(e) => setFormData({ ...formData, desc: e.target.value })}
+                      className="w-full px-5 py-4 border-2 border-slate-100 bg-slate-50/50 rounded-2xl focus:outline-none focus:ring-4 focus:ring-green-500/10 focus:border-green-500 transition-all font-medium"
+                      rows={3}
+                      placeholder="What's in this category?"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2 px-1 text-transform uppercase tracking-wider">Thumbnail</label>
+                    <div className="relative group">
+                      <input
+                        type="file"
+                        onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
+                        className="w-full px-5 py-3.5 border-2 border-dashed border-slate-200 bg-slate-50/30 rounded-2xl focus:outline-none focus:border-green-500 cursor-pointer text-sm"
+                        accept="image/*"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-1">
+                    <div className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={formData.status}
+                        onChange={(e) => setFormData({ ...formData, status: e.target.checked })}
+                        className="sr-only peer"
+                        id="status-toggle"
+                      />
+                      <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                    </div>
+                    <label htmlFor="status-toggle" className="text-sm font-bold text-gray-600 uppercase tracking-tight">Active Status</label>
+                  </div>
+                  <div className="flex gap-4 pt-6">
+                    <button
+                      type="button"
+                      onClick={closeModal}
+                      className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 py-4 px-6 rounded-2xl font-bold transition-all"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white py-4 px-6 rounded-2xl font-bold transition-all shadow-lg hover:shadow-green-200"
+                    >
+                      {editingCategory ? 'Update Now' : 'Save Category'}
+                    </button>
+                  </div>
+                </form>
+              </motion.div>
             </div>
-          </div>
-        )}
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
