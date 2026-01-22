@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { FaSearch, FaPlus, FaEdit, FaTrash, FaTags, FaImage, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
+import { FaSearch, FaPlus, FaEdit, FaTrash, FaTags, FaImage, FaCheckCircle, FaExclamationCircle, FaToggleOn, FaToggleOff } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 const API = `${import.meta.env.VITE_API_URL}/api`;
@@ -12,7 +12,7 @@ export default function Subcategories() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSubcategory, setEditingSubcategory] = useState(null);
-  const [form, setForm] = useState({ name: "", desc: "", categoryId: "", image: null });
+  const [form, setForm] = useState({ name: "", desc: "", categoryId: "", image: null, status: true });
   const [alert, setAlert] = useState(null);
 
   const showAlert = (message, type = 'success') => {
@@ -67,6 +67,7 @@ export default function Subcategories() {
     formData.append("name", form.name);
     formData.append("desc", form.desc);
     formData.append("categoryId", form.categoryId);
+    formData.append("status", form.status);
     if (form.image) formData.append("image", form.image);
 
     try {
@@ -106,10 +107,11 @@ export default function Subcategories() {
         desc: subcategory.desc || "",
         categoryId: subcategory.category?._id || "",
         image: null,
+        status: subcategory.status !== false
       });
     } else {
       setEditingSubcategory(null);
-      setForm({ name: "", desc: "", categoryId: "", image: null });
+      setForm({ name: "", desc: "", categoryId: "", image: null, status: true });
     }
     setIsModalOpen(true);
   };
@@ -117,7 +119,16 @@ export default function Subcategories() {
   const closeModal = () => {
     setIsModalOpen(false);
     setEditingSubcategory(null);
-    setForm({ name: "", desc: "", categoryId: "", image: null });
+    setForm({ name: "", desc: "", categoryId: "", image: null, status: true });
+  };
+
+  const toggleActiveSubcategory = async (subcategory) => {
+    try {
+      await axios.put(`${API}/subcategories/${subcategory._id}/toggle-active`);
+      fetchSubcategories();
+    } catch (error) {
+      console.error("Error toggling subcategory status:", error);
+    }
   };
 
   return (
@@ -212,6 +223,13 @@ export default function Subcategories() {
                 {/* Actions Container */}
                 <div className="flex gap-2">
                   <button
+                    onClick={() => toggleActiveSubcategory(sub)}
+                    className={`p-3 rounded-2xl transition-all ${sub.status !== false ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}
+                    title={sub.status !== false ? 'Deactivate' : 'Activate'}
+                  >
+                    {sub.status !== false ? <FaToggleOn className="text-lg" /> : <FaToggleOff className="text-lg" />}
+                  </button>
+                  <button
                     onClick={() => openModal(sub)}
                     className="p-3 bg-slate-50 text-slate-400 hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-all"
                     title="Edit Subcategory"
@@ -303,6 +321,20 @@ export default function Subcategories() {
                       onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
                       className="w-full border-2 border-dashed border-slate-200 bg-slate-50/30 rounded-2xl px-5 py-3.5 text-sm cursor-pointer"
                     />
+                  </div>
+
+                  <div className="flex items-center gap-3 p-1">
+                    <div className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={form.status}
+                        onChange={(e) => setForm({ ...form, status: e.target.checked })}
+                        className="sr-only peer"
+                        id="status-toggle"
+                      />
+                      <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                    </div>
+                    <label htmlFor="status-toggle" className="text-sm font-bold text-gray-600 uppercase tracking-tight">Active Status</label>
                   </div>
 
                   <div className="flex gap-4 pt-6">

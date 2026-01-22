@@ -177,7 +177,7 @@ export default function Banners() {
               <div className="h-48 bg-gray-200 relative">
                 {banner.imageUrl ? (
                   <img
-                    src={banner.imageUrl}
+                    src={`${import.meta.env.VITE_API_URL}${banner.imageUrl}`}
                     alt={banner.title}
                     className="w-full h-full object-cover"
                   />

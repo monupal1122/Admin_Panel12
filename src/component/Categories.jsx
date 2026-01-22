@@ -72,6 +72,15 @@ export default function Categories() {
     }
   };
 
+  const toggleStatus = async (category) => {
+    try {
+      await axios.put(`${API}/categories/${category._id}/toggle-active`);
+      fetchCategories();
+    } catch (error) {
+      console.error("Error toggling category status:", error);
+    }
+  };
+
   const handleEdit = (category) => {
     setEditingCategory(category);
     setFormData({
@@ -103,17 +112,6 @@ export default function Categories() {
       image: null,
       status: true
     });
-  };
-
-  const toggleStatus = async (category) => {
-    try {
-      const data = new FormData();
-      data.append("status", !category.status);
-      await axios.put(`${API}/categories/${category._id}`, data);
-      fetchCategories();
-    } catch (error) {
-      console.error("Error updating status:", error);
-    }
   };
 
   return (
