@@ -25,7 +25,8 @@ export default function Users() {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-
+console.log("Profiles state:", profiles);
+console.log("Selected Profile state:", selectedProfile);
   useEffect(() => {
     fetchUsers();
     fetchProfiles();
@@ -48,7 +49,9 @@ export default function Users() {
   const fetchProfiles = async () => {
     try {
       const res = await axios.get(`${API}/profile/all`);
+       console.log("Fetched profiles:", res.data);
       setProfiles(res.data);
+      console.log("Fetched profiles:", res.data);
     } catch (error) {
       console.error("Error fetching profiles:", error);
     }
@@ -255,7 +258,7 @@ export default function Users() {
                           <span className="text-xs font-semibold text-gray-500 uppercase">Phone</span>
                         </div>
                         <p className="text-gray-900 font-semibold text-lg">
-                          {selectedProfile.phone || "Not provided"}
+                          {selectedProfile.phoneNumber || "Not provided"}
                         </p>
                       </div>
 

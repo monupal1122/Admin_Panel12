@@ -333,7 +333,7 @@ export default function OrdersPage() {
                        {item.productId?.imageUrl || item.productId?.images ? (
                         <img
                           src={
-                            item.productId.imageUrl || item.productId.images
+                            item.productId.images[0] || item.productId.images[0]
                           }
                           alt={item.productId?.name || "product"}
                           className="w-16 h-16 object-cover rounded-lg"
@@ -436,7 +436,7 @@ export default function OrdersPage() {
                       {item.productId?.imageUrl || item.productId?.images ? (
                         <img
                           src={
-                            item.productId.imageUrl || item.productId.images
+                            item.productId.images[0] || item.productId.images[0]
                           }
                           alt={item.productId?.name || "product"}
                           className="w-16 h-16 object-cover rounded-lg"
