@@ -31,6 +31,7 @@ const API = `${import.meta.env.VITE_API_URL}/api`;
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [user, setUser] = useState([]);
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalOrders: 0,
@@ -377,7 +378,7 @@ export default function Dashboard() {
                       {order.username}
                     </p>
                     <p className="text-sm text-gray-600">
-                      {order.userId.email}
+                      {order.userId?.email || 'N/A'}
                     </p>
                   </div>
                 </div>
